@@ -46,6 +46,9 @@ Explorer Mode
             Can you write a step by step algorithm for playing the game?
             You should be able to turn these instructions over to someone else and have them follow them step-by step like a recipe.
 
+
+            When the dealer has served every player, the dealers face-down card is turned up. If the total is 17 or more, it must stand. If the total is 16 or under, they must take a card. The dealer must continue to take cards until the total is 17 or more, at which point the dealer must stand.
+
 -------------------------------------/ /-------------------------------------------
 
 ## P:roblem:
@@ -54,8 +57,7 @@ Explorer Mode
           - Ace = 11
           - Jack, Queen, King = 10
       2. the house and each player gets dealt two cards each
-        a) house cards are face up
-        b) player cards are face down - only visible to the player
+        - Dealer hand is remain secret
 
       3. the face value of the cards should exceed 21 for all the players
 
@@ -68,6 +70,13 @@ Explorer Mode
       8. if the dealer and play draw the house wins
       9. there should be an option to play again
       10. the cards should be shuffled for each new hand
+
+      Create a Card Class
+      Create a Deck
+      Create a Shuffle
+      Create a Hand
+      Create Dealer
+      Create Player
 
 ## E:xamples
 
@@ -86,25 +95,127 @@ Explorer Mode
 
 ## D:ata Structures
 
-    While <= 21
+| FACE  | VALUE |
+| ----- | ----- |
+| 2     | 2     |
+| 3     | 3     |
+| 4     | 4     |
+| 5     | 5     |
+| 6     | 6     |
+| 7     | 7     |
+| 8     | 8     |
+| 9     | 9     |
+| 10    | 10    |
+| JACK  | 10    |
+| QUEEN | 10    |
+| KING  | 10    |
+| ACE   | 11    |
+
+    Nouns in  the P:roblem:
+    #DECK
+    #CARD
+    #HAND
+    #PLAYER
+    #DEALER
+
+    STATES & BEHAVIORS:
+    #CARD
+    - Face + Suit
+    - Value (behavior)
+    #HAND
+    - List of cards
+    - TotalValue (sum of the list)
+    - start with 0
+        - return totalValue
+        - add card as per instruction from the player/dealer
+    Player/Dealer are instances of the class #HAND
+
+#SHUFFLE
+
+- Fisher Yates
+
+  Classes:
+  Card - Rank, suit, value
+  Deck - 52 cards, 4 suits - Hearts, Spades, Diamonds Clubs in that value order, 13 faces & 10 distinct values
+  Behaviour - Deal a card
+  <!-- - so 9 of Hearts is worth more than the 9 of clubs -->
+  Hands - receive a card (additional to deal) - Dealer - keep track of hands and compare ( each other: >=, == ) ( 21 <=, >< )
+
+## A:lgorithm - grouping IDEAS
+
+    #START
+    Create a #CARD class includes suit, face, value
+    - allCardsOnDeck
+    #DECK - consolidate the #CARDs (can remain a list)
+    #SHUFFLE cards (#CARDs Fisher Yates) - allCardsOnDeck (Behavior)
+    Behavior - #VALUE
+    - if faceValue == 2 - 10 then assign face as value
+    - if Jack || Queen || King (faceValue == 10)
+    - if Ace (faceValue == 11)
+
+    #Deal (behavior)
+      TWO to the player
+      TWO to the dealer
+    #HAND - has to receive 2 cards, add the  value of the cards
+          - add card as per instruction from Player/Dealer
+
+    Ask Player if they want to "stick or hit"
+    #HIT (behavior)
+    - player gets a new card
+      - card ++
+    - <= 21 && > 16
+
+    #STICK (behavior)
+    - decides to stay with current hand
+
+    Dealer: (state)
+    - turns face down cards, up
+    - if < 16 dealer must take another card
+    - If #DEALERHAND >= 17, it must stand.
+
+    #PLAYERWIN
+    - if > DEALERHAND <= 21
+
+    #DEALERWIN
+    - if >= 17 && <=21 && > #PLAYERHAND
+    - else if #DEALERHAND == #PLAYERHAND
+
+    is good While <= 21
     ToLower == "stick"
-    Methods
+    Shuffle the deck
+    drawn cards are no longer counted in the deck until the hand is finished
+    #tie == house win
 
-    Classes:
-    Deck
-          - 52 cards, 4 suits - Hearts, Spades, Diamonds Clubs in that value order, 13 faces & 10 distinct values
-          - so 9 of Hearts is worth more than the 9 of clubs
-    Hands
-          - Player
-          - Dealer
-      - keep track of hands and compare ( each other: >=, == ) ( 21 <=, >< )
+<!-- Group PEDA -->
 
-## A:lgorithm
+PROBLEM: Create a blackjack game.
 
-    Start
-    shuffle cards (52 cards, 4 suits, 13 cards in each, ace is high)
-    #Deal
-      One to the player, one to the dealer
-      RPT #Deal until both have 2 cards
-    Player can stick or twist (request another card)
-    Player must
+Examples:
+Computer draws an Ace of Clubs and a King of Hearts. You draw a 9 of clubs and a 2 of hearts. You draw until you either hit 21 or bust or you stand.
+You draw a 10 of clubs and a 9 of hearts. You stand at 19. Computer draw a 2 of Clubs and a 4 of Hearts. Computer reveals hand. Computer hits until they’re at 17 or higher. Computer draws a 6 and ace. He busts. You win.
+
+Data:
+52 card deck
+The card class
+Suit, Rank, Value
+A loop to shuffle the deck
+A player hand class -
+Computer hand class - For loop that adds until more than or equal to 17
+The drawn cards removed from the deck
+Tie method
+
+Algorithm :
+Create a Card Class that includes the suit and rank. And a method that determines its value.
+Create a Deck using the AllCardsOnDeck.
+Shuffle the Deck
+Deal two cards to player Hand
+Deal two cards to computer Hand
+Ask user if they want to hit or stand.
+If they want to hit, create a method that deals a card from the deck and adds it to playerHand.
+Create a method that ends the game and says the player lost if they go over 21.
+If they want to stand, reveal computerHand.
+computerHand will hit until greater than or equal to 17.
+Compare computerHand and playerHand to see who wins.
+If a tie, computer wins.
+Ask if player wants to play again.
+Create new game that clears both hands and reshuffles the deck.
