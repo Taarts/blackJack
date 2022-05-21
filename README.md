@@ -154,9 +154,11 @@ Explorer Mode
     - if Ace (faceValue == 11)
 
     #Deal (behavior)
-      TWO to the player
-      TWO to the dealer
-    #HAND - has to receive 2 cards, add the  value of the cards
+      one card to a player
+      second card to a player 
+      
+    #HAND - has to receive 2 cards, 
+          - add the  value of the cards
           - add card as per instruction from Player/Dealer
 
     Ask Player if they want to "stick or hit"
