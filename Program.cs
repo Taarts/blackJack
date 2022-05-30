@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+// follow along GSTARK version
 
 class Card /* encapsulation */
 {
