@@ -10,7 +10,7 @@ class Card /* encapsulation */
     public int Value()
     {
         //  this can be done constructing a dictionary for "values"
-        // var avlues = new Dictionary<string, int>();
+        // var values = new Dictionary<string, int>();
         // for (var number = 2; number <= 10; number++)
         // {
         // values.Add($"{number}", number);
@@ -182,10 +182,7 @@ namespace blackJack
 
             Console.WriteLine(player.CurrentCards.Count);
             // Console.WriteLine(deck.Count);
-            // 9.  Show the player the cards in their hand  
-            // - loop through the list of cards in the player hand 
-            Console.WriteLine("player, your cards are: ");
-            Console.WriteLine(String.Join(", ", player.CurrentCards));
+
             // foreach (var card in player.CurrentCards)
             // {
             //     Console.WriteLine(card);
@@ -193,13 +190,38 @@ namespace blackJack
             // for every card, print out
             // to the user the description of the card
 
-            //  the TotalValue of their Hand
-            Console.WriteLine($"The total value of your hand is: {player.TotalValue()}");
             // 10. If they have BUSTED (hand TotalValue is > 21), then goto step 15
-            // 11. Ask the player if they want to HIT or STAND
-            // 12. If HIT
-            //     - Ask the deck for a card and place it in the player hand, repeat step 10
-            // 13. If STAND then continue on
+            var answer = "";
+
+            while (player.TotalValue() <= 21 && answer != "STAND")
+            {
+                // 9.  Show the player the cards in their hand  
+                // - loop through the list of cards in the player hand 
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("player, your cards are: ");
+                Console.WriteLine(String.Join(", ", player.CurrentCards));
+
+                //  the TotalValue of their Hand
+                Console.WriteLine($"The total value of your hand is: {player.TotalValue()}");
+                Console.WriteLine();
+                Console.WriteLine();
+
+                // 11. Ask the player if they want to HIT or STAND
+                Console.WriteLine("Do you want to HIT or STAND? ");
+                answer = Console.ReadLine().ToUpper();
+                // 12. If HIT
+                if (answer == "HIT")
+                {
+                    //     - Ask the deck for a card and place it in the player hand, repeat step 10
+                    var newCard = deck[0];
+                    deck.Remove(newCard);
+
+                    player.AddCard(newCard);
+                }
+
+                // 13. If STAND then continue on
+            }
             // 14. If the dealer's hand TotalValue is more than 21 then goto step 17
             // 15. If the dealer's hand TotalValue is less than 17
             //     - Add a card to the dealer hand and go back to 14
