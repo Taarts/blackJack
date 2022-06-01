@@ -10,6 +10,22 @@ class Card /* encapsulation */
     public int Value()
     {
         //  this can be done constructing a dictionary for "values"
+        // var avlues = new Dictionary<string, int>();
+        // for (var number = 2; number <= 10; number++)
+        // {
+        // values.Add($"{number}", number);
+        // }
+        // values.Add("Jack", 10);
+        // values.Add("Queen", 10);
+        // values.Add("King", 10);
+        // values.Add("Ace", 11);
+
+        // foreach(var entry in values)
+        // {
+        // var face = entry.Key;
+        // var value = entry.Value;
+        // }
+
         switch (Face)
         {
             case "2":
