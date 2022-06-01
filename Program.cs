@@ -180,9 +180,6 @@ namespace blackJack
                 dealer.AddCard(card);
             }
 
-            Console.WriteLine(player.CurrentCards.Count);
-            // Console.WriteLine(deck.Count);
-
             // foreach (var card in player.CurrentCards)
             // {
             //     Console.WriteLine(card);
@@ -193,7 +190,7 @@ namespace blackJack
             // 10. If they have BUSTED (hand TotalValue is > 21), then goto step 15
             var answer = "";
 
-            while (player.TotalValue() <= 21 && answer != "STAND")
+            while (player.TotalValue() < 21 && answer != "STAND")
             {
                 // 9.  Show the player the cards in their hand  
                 // - loop through the list of cards in the player hand 
