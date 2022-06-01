@@ -7,6 +7,58 @@ class Card /* encapsulation */
     public string Suit { get; set; }
     public string Face { get; set; }
 
+    public int Value()
+    {
+        //  this can be done constructing a dictionary for "values"
+        switch (Face)
+        {
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+
+            // case "8": /* repetitive method */
+            case "8":
+            //     return 8;
+            case "9":
+            case "10":
+                return int.Parse(Face);
+
+            case "Jack":
+            case "Queen":
+            case "King":
+                return 10;
+
+            // "if" for each instance in the deck shown below
+            // if (Face == "Jack")
+            // {
+            //     return 10;
+            // }
+
+            // if (Face == "Queen")
+            // {
+            //     return 10;
+            // }
+
+
+            // if (Face == "King")
+            // {
+            //     return 10;
+            // }
+
+            case "Ace":
+                return 11;
+
+            default:
+                return 0;
+        }
+    }
+    public override string ToString()
+    {
+        return $"The {Face} of {Suit}";
+    }
 }
 class Hand
 {
@@ -127,23 +179,26 @@ namespace blackJack
 
             //  the TotalValue of their Hand
             Console.WriteLine($"The total value of your hand is: {player.TotalValue()}");
-        // 10. If they have BUSTED (hand TotalValue is > 21), then goto step 15
-        // 11. Ask the player if they want to HIT or STAND
-        // 12. If HIT
-        //     - Ask the deck for a card and place it in the player hand, repeat step 10
-        // 13. If STAND then continue on
-        // 14. If the dealer's hand TotalValue is more than 21 then goto step 17
-        // 15. If the dealer's hand TotalValue is less than 17
-        //     - Add a card to the dealer hand and go back to 14
-        // 16. Show the dealer's hand TotalValue
-        // 17. If the player's hand TotalValue > 21 show "DEALER WINS"
-        // 18. If the dealer's hand TotalValue > 21 show "PLAYER WINS"
-        // 19. If the dealer's hand TotalValue is more than the player's hand TotalValue then show "DEALER WINS", else show "PLAYER WINS"
-        // 20. If the value of the hands are even, show "DEALER WINS"
+            // 10. If they have BUSTED (hand TotalValue is > 21), then goto step 15
+            // 11. Ask the player if they want to HIT or STAND
+            // 12. If HIT
+            //     - Ask the deck for a card and place it in the player hand, repeat step 10
+            // 13. If STAND then continue on
+            // 14. If the dealer's hand TotalValue is more than 21 then goto step 17
+            // 15. If the dealer's hand TotalValue is less than 17
+            //     - Add a card to the dealer hand and go back to 14
+            // 16. Show the dealer's hand TotalValue
+            // 17. If the player's hand TotalValue > 21 show "DEALER WINS"
+            // 18. If the dealer's hand TotalValue > 21 show "PLAYER WINS"
+            // 19. If the dealer's hand TotalValue is more than the player's hand TotalValue then show "DEALER WINS", else show "PLAYER WINS"
+            // 20. If the value of the hands are even, show "DEALER WINS"
 
 
-/*  take values from the dictionary and add them together (Value of card/hand)
-// how to reference a method from the Main method
-// how to restart the game at *any* point
-//  how to deal out cards from the deck
-// how to avoid duplicating code */
+            /*  take values from the dictionary and add them together (Value of card/hand)
+            // how to reference a method from the Main method
+            // how to restart the game at *any* point
+            //  how to deal out cards from the deck
+            // how to avoid duplicating code */
+        }
+    }
+}
