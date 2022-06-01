@@ -13,24 +13,33 @@ class Hand
     // List of individual cards
 
     //      data type                            neat instance of list
-    public List<Card> FreshHand { get; set; } /* = new List<Card>(); */
+    public List<Card> CurrentCards { get; set; } /* = new List<Card>(); */
     // method 
     // this uses the constructor to initialize the list of cards
     public Hand()
     {
-        FreshHand = new List<Card>();
+        CurrentCards = new List<Card>();
     }
     // Behaviors
     //  TotalValue representing the sum of the cards in the hand
-    //  start with a Total  = 0
-    // Foreach card in the hand DO THIS:
-    //    Add the amount of that card's value to the total
-    //    return Total as the result
+    public int TotalValue()
+    {
+        //  start with a Total  = 0
+        var total = 0;
+        //  Foreach card in the hand DO THIS:
+        foreach (var card in CurrentCards)
+        {
+            total = total + card.Value();
+        }
+        //  Add the amount of that card's value to the total
+        //    return Total as the result
+        return total;
+    }
     //  Add card to the hand
     public void AddCard(Card cardToAdd) /* doesn't return any information back to the person requesting it */
     {
         //  adds the additional card to the list of  cards, that the hand has
-        FreshHand.Add(cardToAdd);
+        CurrentCards.Add(cardToAdd);
     }
 }
 
@@ -58,7 +67,7 @@ namespace blackJack
                     };
                     // Console.WriteLine($"{newCard.Face} of {newCard.Suit}");
 
-                    // create deck
+                    // create deck 
                     deck.Add(newCard);
                 }
             }
@@ -103,48 +112,34 @@ namespace blackJack
                 dealer.AddCard(card);
             }
 
-            Console.WriteLine(player.FreshHand.Count);
+            Console.WriteLine(player.CurrentCards.Count);
             // Console.WriteLine(deck.Count);
-            // - call the "add card" behavior of the hand and pass it this newCard
+            // 9.  Show the player the cards in their hand  
+            // - loop through the list of cards in the player hand 
+            Console.WriteLine("player, your cards are: ");
+            Console.WriteLine(String.Join(", ", player.CurrentCards));
+            // foreach (var card in player.CurrentCards)
+            // {
+            //     Console.WriteLine(card);
+            // }
+            // for every card, print out
+            // to the user the description of the card
 
-
-            // value
-            // - Value assigns value 2 - 10 as per face, J, Q, K, == 10, A == 11
-            // - if faceValue == 2 - 10 then assign face as value
-            // - if Jack || Queen || King (faceValue == 10)
-            // - if Ace (faceValue == 11)
-            // #DECK - from AllCardsOnDeck (can remain a list)
-
-            //   TWO to the dealer
-            // Ask Player if they want to "stick or hit"
-
-            // #HIT (behavior)
-            // - the card is equal to 0 index of the deck
-            // - remove that card from the deck list
-            // - call the "add card" behavior of the hand and pass it this newCard
-            // 
-            // - player gets a new card
-            //   - card ++
-            // - <= 21 && > 16
-
-            // #STICK (behavior)
-            // - decides to stay with current hand
-
-            // Dealer: (state)
-            // - turns face down cards, up
-            // - if < 16 dealer must take another card
-            // - If #DEALERHAND >= 17, it must stand.
-
-            // #PLAYERWIN
-            // - if > DEALERHAND <= 21
-
-            // #DEALERWIN
-            // - if >= 17 && <=21 && > #PLAYERHAND
-            // - else if #DEALERHAND == #PLAYERHAND
-        }
-    }
-}
-
+            //  the TotalValue of their Hand
+            Console.WriteLine($"The total value of your hand is: {player.TotalValue()}");
+        // 10. If they have BUSTED (hand TotalValue is > 21), then goto step 15
+        // 11. Ask the player if they want to HIT or STAND
+        // 12. If HIT
+        //     - Ask the deck for a card and place it in the player hand, repeat step 10
+        // 13. If STAND then continue on
+        // 14. If the dealer's hand TotalValue is more than 21 then goto step 17
+        // 15. If the dealer's hand TotalValue is less than 17
+        //     - Add a card to the dealer hand and go back to 14
+        // 16. Show the dealer's hand TotalValue
+        // 17. If the player's hand TotalValue > 21 show "DEALER WINS"
+        // 18. If the dealer's hand TotalValue > 21 show "PLAYER WINS"
+        // 19. If the dealer's hand TotalValue is more than the player's hand TotalValue then show "DEALER WINS", else show "PLAYER WINS"
+        // 20. If the value of the hands are even, show "DEALER WINS"
 
 
 /*  take values from the dictionary and add them together (Value of card/hand)
