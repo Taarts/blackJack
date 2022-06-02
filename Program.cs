@@ -122,6 +122,65 @@ class Hand
         Console.WriteLine();
     }
 }
+class Deck
+{
+    public List<Card> Cards { get; set; } = new List<Card>();
+    // Behavior
+    // Initialize a list of 52cards
+    public void Initialize()
+    {
+        // make a blank list of cards
+        var deck = new List<Card>();
+        var suits = new List<string>() { "Hearts", "Spades", "Diamonds", "Clubs" };
+        var faces = new List<string>() { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
+
+        foreach (var suit in suits)
+        {
+            foreach (var face in faces)
+            {
+                var newCard = new Card()
+                {
+                    Suit = suit,
+                    Face = face,
+                };
+                // Console.WriteLine($"{newCard.Face} of {newCard.Suit}");
+
+                // create deck 
+                Cards.Add(newCard);
+                // shuffle
+                // deal a single card to hand
+            }
+        }
+    }
+    // shuffle
+    public void Shuffle()
+    {
+        // #SHUFFLE cards (fisher yates) - AllCardsOnDeck (Behavior)
+        var numberOfCards = Cards.Count;
+
+        for (var rightIndex = numberOfCards - 1; rightIndex >= 1; rightIndex--)
+        {
+            //  // leftIndex = random integer that is greater than or equal to 0 and LESS than rightIndex. 
+            var randomNumberGenerator = new Random();
+            var leftIndex = randomNumberGenerator.Next(rightIndex);
+            var leftCard = Cards[leftIndex];
+            var rightCard = Cards[rightIndex];
+            Cards[rightIndex] = leftCard;
+            Cards[leftIndex] = rightCard;
+        }
+    }
+    // Deal Cards
+    public Card Deal()
+
+    {
+        var card = Cards[0];
+        // - remove that card from the Cards list
+        Cards.Remove(card);
+        // player.AddCard(card);
+        return card;
+    }
+}
+
 
 namespace blackJack
 {
@@ -131,6 +190,10 @@ namespace blackJack
         static void GamePlay()
         {
             // make a blank list of cards
+            var temporaryDeck = new Deck();
+            temporaryDeck.Initialize();
+            temporaryDeck.Shuffle();
+
             var deck = new List<Card>();
             var suits = new List<string>() { "Hearts", "Spades", "Diamonds", "Clubs" };
             var faces = new List<string>() { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
@@ -150,19 +213,7 @@ namespace blackJack
                     deck.Add(newCard);
                 }
             }
-            // #SHUFFLE cards (fisher yates) - AllCardsOnDeck (Behavior)
-            var numberOfCards = deck.Count;
 
-            for (var rightIndex = numberOfCards - 1; rightIndex >= 1; rightIndex--)
-            {
-                //  // leftIndex = random integer that is greater than or equal to 0 and LESS than rightIndex. 
-                var randomNumberGenerator = new Random();
-                var leftIndex = randomNumberGenerator.Next(rightIndex);
-                var leftCard = deck[leftIndex];
-                var rightCard = deck[rightIndex];
-                deck[rightIndex] = leftCard;
-                deck[leftIndex] = rightCard;
-            }
             // debug
             // #HAND = has to receive cards, add the  value of the cards
             var player = new Hand();
