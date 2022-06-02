@@ -166,6 +166,13 @@ class Hand
 class Deck
 {
     public List<Card> Cards { get; set; } = new List<Card>();
+
+    public Deck()
+    {
+        // every time there is a new deck, Initialize & Shuffle
+        Initialize();
+        Shuffle();
+    }
     // Behavior
     // Initialize a list of 52cards
     public void Initialize()
@@ -242,8 +249,8 @@ namespace blackJack
         static void GamePlay()
         {
             var deck = new Deck();
-            deck.Initialize();
-            deck.Shuffle();
+            // deck.Initialize();
+            // deck.Shuffle();
 
             // debug
             // #HAND = has to receive cards, add the  value of the cards
