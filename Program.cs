@@ -103,11 +103,21 @@ class Hand
         //    return Total as the result
         return total;
     }
-    //  Add card to the hand
+    //  Add SINGLE card to the hand
     public void AddCard(Card cardToAdd) /* doesn't return any information back to the person requesting it */
     {
         //  adds the additional card to the list of  cards, that the hand has
         CurrentCards.Add(cardToAdd);
+    }
+    // Adds multiple cards to my hand
+    public void AddCards(List<Card> cardsToAdd)
+    {
+        // loop thro list of cards
+        foreach (Card card in cardsToAdd)
+        {
+            // for every card in CardsToAdd, call AddCard
+            AddCard(card);
+        }
     }
     public void PrintCardsAndTotal(string handName)
     {
@@ -120,6 +130,33 @@ class Hand
         Console.WriteLine($"The total value of your hand is: {TotalValue()}");
         Console.WriteLine();
         Console.WriteLine();
+    }
+    public bool NotBusted()
+    {
+        return !Busted();
+    }
+
+    public bool Busted()
+    {
+        if (TotalValue() > 21)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool DealerShouldHit()
+    {
+        if (TotalValue() <= 17)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 class Deck
@@ -169,9 +206,9 @@ class Deck
             Cards[leftIndex] = rightCard;
         }
     }
-    // Deal Cards
-    public Card Deal()
 
+    // Deal SINGLE Card
+    public Card Deal()
     {
         var card = Cards[0];
         // - remove that card from the Cards list
@@ -179,40 +216,30 @@ class Deck
         // player.AddCard(card);
         return card;
     }
+
+    // Deal MULTIPLE cards
+    public List<Card> DealMultiple(int numberOfCardsToDeal)
+    {
+        var multipleCards = new List<Card>();
+
+        for (int count = 0; count < numberOfCardsToDeal; count++)
+        {
+            Card dealtCard = Deal();
+
+            multipleCards.Add(dealtCard);
+        }
+        return multipleCards;
+    }
 }
-
-
 namespace blackJack
 {
-
     class Program
     {
         static void GamePlay()
         {
-            // make a blank list of cards
-            var temporaryDeck = new Deck();
-            temporaryDeck.Initialize();
-            temporaryDeck.Shuffle();
-
-            var deck = new List<Card>();
-            var suits = new List<string>() { "Hearts", "Spades", "Diamonds", "Clubs" };
-            var faces = new List<string>() { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
-
-            foreach (var suit in suits)
-            {
-                foreach (var face in faces)
-                {
-                    var newCard = new Card()
-                    {
-                        Suit = suit,
-                        Face = face,
-                    };
-                    // Console.WriteLine($"{newCard.Face} of {newCard.Suit}");
-
-                    // create deck 
-                    deck.Add(newCard);
-                }
-            }
+            var deck = new Deck();
+            deck.Initialize();
+            deck.Shuffle();
 
             // debug
             // #HAND = has to receive cards, add the  value of the cards
@@ -226,21 +253,25 @@ namespace blackJack
             //      - add another card
             // breakdown:
             // - the card is equal to 0 index of the deck
-            for (var numberOfCardsToDeal = 0; numberOfCardsToDeal < 2; numberOfCardsToDeal++)
-            {
-                var card = deck[0];
-                // - remove that card from the deck list
-                deck.Remove(card);
-                player.AddCard(card);
-            }
 
-            for (var numberOfCardsToDeal = 0; numberOfCardsToDeal < 2; numberOfCardsToDeal++)
-            {
-                var card = deck[0];
-                // - remove that card from the deck list
-                deck.Remove(card);
-                dealer.AddCard(card);
-            }
+            // for (var numberOfCardsToDeal = 0; numberOfCardsToDeal < 2; numberOfCardsToDeal++)
+            // {
+            //     Card card = deck.Deal();
+
+            //     player.AddCard(card);
+            // }
+            player.AddCards(deck.DealMultiple(2));
+
+
+            dealer.AddCards(deck.DealMultiple(2));
+
+            // for (var numberOfCardsToDeal = 0; numberOfCardsToDeal < 2; numberOfCardsToDeal++)
+            // {
+            //     Card card = deck.Deal();
+            //     // - remove that card from the deck list
+            //     // deck.Remove(card);
+            //     dealer.AddCard(card);
+            // }
 
             // foreach (var card in player.CurrentCards)
             // {
@@ -250,6 +281,7 @@ namespace blackJack
             // to the user the description of the card
 
             // 10. If they have BUSTED (hand TotalValue is > 21), then goto step 15
+
             var answer = "";
 
             while (player.TotalValue() < 21 && answer != "STAND")
@@ -264,10 +296,9 @@ namespace blackJack
                 if (answer == "HIT")
                 {
                     //     - Ask the deck for a card and place it in the player hand, repeat step 10
-                    var newCard = deck[0];
-                    deck.Remove(newCard);
+                    Card card = deck.Deal();
 
-                    player.AddCard(newCard);
+                    player.AddCard(card);
                 }
 
                 // 13. If STAND then continue on
@@ -275,12 +306,12 @@ namespace blackJack
             player.PrintCardsAndTotal("Player");
             // 14. If the dealer's hand TotalValue is more than 21 then goto step 17
             // 15. If the dealer's hand TotalValue is less than 17
-            while (player.TotalValue() <= 21 && dealer.TotalValue() <= 17)
+            while (player.NotBusted() && dealer.DealerShouldHit())
             {
-                var newCard = deck[0];
-                deck.Remove(newCard);
+                Card card = deck.Deal();
 
-                dealer.AddCard(newCard);
+
+                dealer.AddCard(card);
                 //     - Add a card to the dealer hand and go back to 14
 
             }
@@ -290,13 +321,13 @@ namespace blackJack
             //  the TotalValue of their Hand
 
             // 17. If the player's hand TotalValue > 21 show "DEALER WINS"
-            if (player.TotalValue() > 21)
+            if (player.Busted())
             {
                 Console.WriteLine("DEALER WINS");
             }
             else
             // 18. If the dealer's hand TotalValue > 21 show "PLAYER WINS"
-            if (dealer.TotalValue() > 21)
+            if (dealer.Busted())
             {
                 Console.WriteLine("PLAYER WINS");
             }
