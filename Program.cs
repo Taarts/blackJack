@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-// follow along GSTARK version
+// follow along GSTARK version - https://github.com/suncoast-devs/cohort-22/commits/main
+// can review step by step all the changes made at each commit along the way.
+// useful to see the refactoring stages of Gavin's code
 
 class Card /* encapsulation */
 {
